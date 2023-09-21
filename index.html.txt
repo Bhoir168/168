@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trading Bot</title>
+</head>
+<body>
+    <h1>Trading Bot</h1>
+    <form id="trading-form">
+        <label for="user-id">User ID:</label>
+        <input type="text" id="user-id" name="user-id" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="twofa">Two-Factor Authentication (2FA):</label>
+        <input type="text" id="twofa" name="twofa" required><br><br>
+
+        <label for="symbol">Symbol:</label>
+        <input type="text" id="symbol" name="symbol" required><br><br>
+
+        <label for="sell-target">Sell Target:</label>
+        <input type="number" id="sell-target" name="sell-target" step="0.01" required><br><br>
+
+        <button type="button" id="start-trading">Start Trading</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        document.getElementById("start-trading").addEventListener("click", function() {
+            // Get input values
+            var userId = document.getElementById("user-id").value;
+            var password = document.getElementById("password").value;
+            var twofa = document.getElementById("twofa").value;
+            var symbol = document.getElementById("symbol").value;
+            var sellTarget = parseFloat(document.getElementById("sell-target").value);
+
+            // Perform input validation here if needed
+
+            // Send input values to your Python script via an API or AJAX request
+            // Example using fetch API:
+            fetch('/path-to-your-python-script.py', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    password: password,
+                    twofa: twofa,
+                    symbol: symbol,
+                    sell_target: sellTarget
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from your Python script here
+                document.getElementById("output").textContent = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
